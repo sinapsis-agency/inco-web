@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   TEMA (Tailwind v4)
+   En v4 no hay tailwind.config.js: el tema se declara acá con @theme.
+   Cada variable genera utilidades automáticamente (ej. --color-brand
+   habilita text-brand, bg-brand, border-brand, etc.)
+   ========================================================================== */
+@theme {
+  --color-brand: #ea750a;
+  --color-brand-dark: #b85c07;
+  --color-ink: #14130f;
+  --color-ash: #8f8c86;
+  --color-ash-light: #e7e5df;
+  --color-paper: #ffffff;
+
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+:root {
+  --bg: #ffffff;
+  --surface: #f4f3f0;
+  --paper: #14130f;
+  --concrete: #8f8c86;
+  --energy: #ea750a;
+  --line: rgba(20, 19, 15, 0.14);
+
+  --step--1: clamp(0.8rem, 0.77rem + 0.15vw, 0.9rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.3rem, 1.18rem + 0.55vw, 1.65rem);
+  --step-2: clamp(1.85rem, 1.6rem + 1.2vw, 2.5rem);
+  --step-3: clamp(2.5rem, 2rem + 2.4vw, 3.75rem);
+  --step-4: clamp(3rem, 2.2rem + 3.8vw, 5.25rem);
+
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --content-max: 74rem;
+}
+
+/* ==========================================================================
+   BASE — TODO va dentro de @layer base a propósito.
+   ---------------------------------------------------------------------------
+   Este es el motivo real por el que varios ajustes de espaciado (mt-12,
+   mt-4, etc.) no se veían: Tailwind v4 mete sus propias utilidades dentro
+   de una "cascade layer" (@layer utilities). Cualquier CSS nuestro que NO
+   esté dentro de un @layer queda "sin capa", y el CSS sin capa SIEMPRE le
+   gana a cualquier CSS con capa — sin importar cuán específico sea el
+   selector. Como nuestro `h1, h2, h3 { margin: 0 }` estaba suelto (sin
+   @layer), le ganaba a clases como `mt-12` aunque esas fueran más
+   específicas. La solución es meter nuestro CSS base en @layer base,
+   que es exactamente donde Tailwind espera que vaya el CSS base propio.
+   ========================================================================== */
+@layer base {
+  body {
+    background: var(--bg);
+    color: var(--paper);
+    font-family: var(--font-sans);
+    font-size: var(--step-0);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Grano sutil tipo hormigón sobre toda la página */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-sans);
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  h1 { font-size: var(--step-4); font-weight: 700; }
+  h2 { font-size: var(--step-3); font-weight: 700; }
+  h3 { font-size: var(--step-2); font-weight: 600; }
+
+  a { color: inherit; text-decoration: none; }
+
+  .container-inco {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    padding-block: clamp(3.5rem, 8vw, 7rem);
+    position: relative;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--energy);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3em 0.75em;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 0.9em 1.4em;
+    border: 1px solid var(--paper);
+    background: transparent;
+    color: var(--paper);
+    width: fit-content;
+    max-width: 100%;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .btn:hover { background: var(--energy); border-color: var(--energy); color: #fff; }
+  .btn--solid { background: var(--energy); border-color: var(--energy); color: #fff; }
+  .btn--solid:hover { background: transparent; color: #fff; }
+
+  .field__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--concrete);
+    margin-bottom: 0.5rem;
+  }
+  .field__input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--paper);
+    padding: 0.8em 1em;
+    font-family: var(--font-sans);
+    font-size: var(--step-0);
+  }
+  .field__input:focus { border-color: var(--energy); outline: none; }
+
+  /* ------------------------------------------------------------------
+     LENIS (scroll suave)
+     ------------------------------------------------------------------ */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-stopped { overflow: hidden; }
+  .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+  /* ------------------------------------------------------------------
+     PARALLAX "Quiénes somos" — técnica de crossfade.
+     Las 3 fotos ocupan el mismo espacio (inset:0) todo el tiempo; GSAP solo
+     cambia su opacidad/escala. Como nunca cambian de posición, siempre
+     comparten exactamente los mismos bordes — no puede haber "costuras".
+     ------------------------------------------------------------------ */
+  .parallax { position: relative; }
+
+  .parallax__header {
+    position: relative;
+    height: 260vh; /* alto del "carril" de scroll del efecto */
+  }
+
+  .parallax__sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: var(--color-ink);
+  }
+
+  .parallax__layer-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    /* cover (no contain): contain dejaba grandes barras negras a los
+       costados porque el encuadre de la foto (800x700) es mucho más
+       "cuadrado" que la pantalla. Con cover se llena toda la página, y
+       como las 3 capas comparten EXACTAMENTE el mismo object-fit +
+       object-position, se recortan todas igual y siguen alineadas al
+       pixel entre sí. */
+    object-fit: cover;
+    object-position: center bottom;
+    display: block;
+  }
+
+  .parallax__content {
+    position: relative;
+    z-index: 10;
+    background: var(--color-ink);
+    color: #fff;
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+
+  @media (max-width: 640px) {
+    .parallax__header { height: 200vh; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  :focus-visible { outline: 2px solid var(--energy); outline-offset: 2px; }
+}
