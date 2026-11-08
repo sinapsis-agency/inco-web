@@ -39,16 +39,30 @@ export function ParallaxComponent() {
       gsap.set(central, { yPercent: 35 });
       gsap.set(superior, { yPercent: 60 });
 
+      // IMPORTANTE: el trigger es SOLO el bloque de las fotos
+      // (.parallax__header), no toda la sección. La escena queda fija
+      // (sticky) únicamente mientras dura ese bloque; si la animación se
+      // midiera sobre toda la sección (fotos + texto de abajo), cuando la
+      // escena se suelta y se va de pantalla la animación iría recién por
+      // la mitad — el trabajador seguiría "subiendo", con las piernas
+      // cortadas y las capas desalineadas.
+      const header = root.querySelector<HTMLElement>('.parallax__header');
+      if (!header) return;
+
+      // La animación ocupa el 80% del recorrido y el 20% final queda
+      // quieto: así la escena se detiene un momento, alineada, antes de
+      // soltarse.
       gsap.timeline({
         scrollTrigger: {
-          trigger: root,
+          trigger: header,
           start: 'top top',
-          end: 'bottom top',
+          end: 'bottom bottom',
           scrub: 0.4,
         },
       })
-        .to(central, { yPercent: 0, ease: 'none', duration: 1 }, 0)
-        .to(superior, { yPercent: 0, ease: 'none', duration: 1 }, 0);
+        .to(central, { yPercent: 0, ease: 'none', duration: 0.8 }, 0)
+        .to(superior, { yPercent: 0, ease: 'none', duration: 0.8 }, 0)
+        .to({}, { duration: 0.2 }, 0.8);
     }, root);
 
     const lenis = new Lenis();

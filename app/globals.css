@@ -192,7 +192,14 @@
        object-position, se recortan todas igual y siguen alineadas al
        pixel entre sí. */
     object-fit: cover;
-    object-position: center bottom;
+    /* 47% vertical: medido sobre la foto real, el trabajador ocupa del 29%
+       (casco) al 74% (botas) de la altura. En pantallas anchas cover solo
+       muestra ~55-65% de esa altura; con 47% la ventana visible incluye
+       el casco y las botas desde pantallas 16:10 hasta ~2.2:1. Antes era
+       "bottom" (100%), que en pantallas anchas cortaba la cabeza. En
+       celular (vertical) se ve la altura completa y este valor no cambia
+       nada. */
+    object-position: 50% 47%;
     display: block;
   }
 
